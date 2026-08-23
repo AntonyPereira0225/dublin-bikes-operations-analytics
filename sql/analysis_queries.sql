@@ -6,8 +6,8 @@
 SELECT
     COUNT(*) AS observations,
     COUNT(DISTINCT station_id) AS stations,
-    MIN(last_reported) AS first_observation,
-    MAX(last_reported) AS last_observation,
+    MIN(last_reported_dublin) AS first_observation,
+    MAX(last_reported_dublin) AS last_observation,
     ROUND(AVG(num_bikes_available), 2) AS avg_bikes_available,
     ROUND(AVG(num_docks_available), 2) AS avg_docks_available
 FROM station_status;
@@ -124,18 +124,18 @@ WITH ordered_status AS (
     SELECT
         station_id,
         name,
-        last_reported,
+        last_reported_dublin,
         num_bikes_available,
         LAG(num_bikes_available) OVER (
             PARTITION BY station_id
-            ORDER BY last_reported
+            ORDER BY last_reported_dublin
         ) AS previous_bikes
     FROM station_status
 ), changes AS (
     SELECT
         station_id,
         name,
-        last_reported,
+        last_reported_dublin,
         previous_bikes,
         num_bikes_available,
         num_bikes_available - previous_bikes AS bike_change
@@ -145,7 +145,7 @@ WITH ordered_status AS (
 SELECT
     station_id,
     name,
-    last_reported,
+    last_reported_dublin,
     previous_bikes,
     num_bikes_available,
     bike_change
