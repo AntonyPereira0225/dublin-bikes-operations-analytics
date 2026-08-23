@@ -2,6 +2,11 @@
 data/dublin_bikes_april_2026.csv
 data/raw/
 
+# Local database files
+data/*.db
+*.sqlite
+*.sqlite3
+
 # Python environment and cache
 .venv/
 venv/
