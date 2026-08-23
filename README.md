@@ -16,6 +16,21 @@ The project demonstrates an end-to-end Data Analyst workflow:
 
 > How can Dublin Bikes use historical station availability data to identify stations at risk of becoming empty or full, understand peak demand patterns, and prioritise bike-rebalancing activity?
 
+## Power BI Dashboard
+
+![Dublin Bikes Operations & Rebalancing Dashboard](images/power_bi_dashboard.png)
+
+The interactive dashboard provides:
+
+- Network-level KPI cards for stations, observations, empty rate and full rate
+- Hourly near-empty and near-full risk trends
+- Top 10 rebalancing-priority station ranking
+- Geographic station-priority mapping across Dublin
+- Station-level risk detail
+- Interactive weekday/weekend and station filters
+
+**Power BI file:** [Open the `.pbix` file](dashboard/dublin_bikes_operations_dashboard.pbix)
+
 ## Dataset Snapshot
 
 - **617,218** cleaned station-status observations
@@ -24,6 +39,7 @@ The project demonstrates an end-to-end Data Analyst workflow:
 - **0** duplicate rows
 - **0** missing timestamps, station IDs or capacity values
 - **100%** of observations recorded while stations were active for both renting and returning
+- **8,093** observations (**~1.31%**) flagged for capacity-consistency review
 
 ## Key Findings
 
@@ -33,7 +49,19 @@ The project demonstrates an end-to-end Data Analyst workflow:
 - **Heuston Bridge (South)** showed strong dock pressure, with **25.22% full** and **18.13% near-full** observations.
 - Network-wide near-empty pressure was highest around **18:00–19:00**.
 - Weekend observations showed higher near-empty and near-full rates, while weekdays recorded a higher outright empty-station rate.
-- The operational validation confirmed that the identified pressure patterns were not caused by stations being unavailable for renting or returning.
+- Operational-status validation confirmed that the identified pressure patterns were not caused by stations being unavailable for renting or returning.
+
+## Business Recommendations
+
+Based on the April 2026 station-status observations:
+
+1. **Prioritise bike replenishment at persistent shortage stations**, especially Parnell Square North, Hardwicke Place, Fitzwilliam Square East and Grangegorman Lower (North).
+2. **Prioritise dock clearance at persistent full-station locations**, particularly the Heuston area, where both Heuston Bridge stations showed substantial dock pressure.
+3. **Schedule additional rebalancing attention before the evening risk peak**, with near-empty pressure strongest around 18:00–19:00.
+4. **Use station-specific rather than network-wide rebalancing rules.** The analysis shows that some locations primarily experience bike shortages while others primarily experience dock shortages.
+5. **Monitor capacity-consistency exceptions separately** so operational decisions are not distorted by the small subset of observations requiring additional data-quality review.
+
+These recommendations identify operational priorities from historical station-status patterns; they do not imply observed trip-level causality because the dataset records station availability rather than individual journeys.
 
 ## Key Visualisations
 
@@ -99,6 +127,7 @@ The source provides historical station-status observations including station ide
 - Data modelling
 - DAX measures
 - KPI cards
+- Interactive slicers
 - Time-series analysis
 - Station-level drill-down
 - Geographic mapping
@@ -115,7 +144,7 @@ The source provides historical station-status observations including station ide
 7. Use SQL to analyse network performance, station-level risk, hourly patterns and rebalancing priorities.
 8. Validate that high-risk station observations occurred while stations were operational.
 9. Generate portfolio visualisations from SQL results.
-10. Build an interactive Power BI operations dashboard and final business recommendations.
+10. Build an interactive Power BI operations dashboard and translate the analysis into practical rebalancing recommendations.
 
 ## Repository Structure
 
@@ -137,7 +166,8 @@ dublin-bikes-operations-analytics/
 ├── sql/
 │   └── analysis_queries.sql
 ├── dashboard/
-│   └── README.md
+│   ├── README.md
+│   └── dublin_bikes_operations_dashboard.pbix
 ├── docs/
 │   ├── project_plan.md
 │   ├── data_dictionary.md
@@ -146,16 +176,17 @@ dublin-bikes-operations-analytics/
 │   └── operational_validation.md
 └── images/
     ├── hourly_availability_risk.png
-    └── top_rebalancing_priority_stations.png
+    ├── top_rebalancing_priority_stations.png
+    └── power_bi_dashboard.png
 ```
 
 ## Data Quality Note
 
-A small subset of observations was flagged for a station-capacity consistency review. These records are documented transparently and retained for further sensitivity checking rather than silently removed. The major station-risk findings were separately validated against the renting and returning service-status fields.
+A small subset of observations was flagged for station-capacity consistency review. These records are documented transparently and retained for further sensitivity checking rather than silently removed. The major station-risk findings were separately validated against the renting and returning service-status fields.
 
 ## Project Status
 
-🟡 **In development — preprocessing, SQL analysis, validation and initial visualisation complete. Power BI dashboard in progress.**
+✅ **Complete — Python preprocessing, SQL analysis, operational validation, visualisation and interactive Power BI dashboard delivered.**
 
 ## Author
 
